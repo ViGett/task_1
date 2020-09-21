@@ -1,43 +1,25 @@
 /*
-1) Создайте класс комментариев с полями: имя, дата и время, текст. Примечание: разумеется, предварительно стоит создать массивы (либо объекты Set) для случайных данных по имени и тексту. Дату же можно генерировать просто с помощью Math.random().
-2) Сгенерируйте 10 случайных комментариев и запишите их все в массив.
-3) Выведите на HTML-страницу все сгенерированные комментарии в формате: <div><span class="date">Дата и время</span> <span class="name"> >Имя</span> пишет: <span class="text">Текст</span></div>.
-Примечание: разумеется, предварительно стоит создать массивы (либо объекты Set) для случайных данных по имени и тексту. Дату же можно генерировать просто с помощью Math.random().
+1) Добавьте пустой блок поле на страницу (<div tabindex="0"></div>).
+2) При клике по стрелкам на клавиатуре он должен перемещаться на 10px вверх, вниз, вправо или влево в зависимости от нажатой клавиши.
 */
 
-"use strict";
+"use strict"
 
-class Comment {
-    constructor(name, date, text) {
-        this.name = name;
-        this.date = date;
-        this.text = text;
-    }
-    static names = ['Дмитрий', 'Константин', 'Владилсав', 'Надежеда', 'Анастасия', 'Андрей', 'Николай', 'Любовь', 'Владимир', 'Виктория'];
-    static texts = ['Отличная работа!!', 'Жду продолжения!', 'Хорошо', 'Плохо', 'Мало интересного материала', 'Люблю ваши статьи'];
+alert('Чтобы управлять блоком с промощью стрелочек необходимо нажать на него');
 
-    static getRandomName() {
-        return Comment.names[Math.floor(Math.random() * Comment.names.length)];
-    }
+const D = 10;
 
-    static getRandomText() {
-        return Comment.texts[Math.floor(Math.random() * Comment.texts.length)];
-    }
+let keydown = event => {
+    let div = document.querySelector('div');
+    let top = (parseFloat(div.style.top))? parseFloat(div.style.top) : 0;
+    let left = (parseFloat(div.style.left))? parseFloat(div.style.left) : 0;
+
+    if (event.code == 'ArrowUp') div.style.top = top - D + 'px';
+    else if (event.code == 'ArrowDown') div.style.top = top + D + 'px';
+    else if (event.code == 'ArrowLeft') div.style.left = left - D + 'px';
+    else if (event.code == 'ArrowRight') div.style.left = left + D + 'px';
 }
 
-
-let comments = [];
-let count = 18;
-
-for (let i = 0; i < count; i++) {
-    comments.push(new Comment(Comment.getRandomName(), new Date(Math.random() * 2000000000000), Comment.getRandomText()));
-}
-
-for (let com of comments) {
-    let template = document.querySelector('#comment-template').cloneNode(true);
-    template.removeAttribute('id');
-    template.querySelector('.name').innerHTML = com.name;
-    template.querySelector('.date').innerHTML = com.date;
-    template.querySelector('.text').innerHTML = com.text;
-    document.body.append(template);
-}
+document.addEventListener('DOMContentLoaded', function(event) {
+    document.querySelector('div').addEventListener('keydown', keydown);
+});
